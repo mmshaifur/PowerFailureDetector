@@ -1,9 +1,8 @@
 int8_t answer;
 char aux_str[200];
-void gprsInit() 
-{
+void gprsInit() {
   Serial.begin(115200);
-  Serial.println("Starting...");
+  Serial.println("Starting GSM...");
   delay(3000);
   delay(3000);
   delay(5000);
@@ -14,7 +13,7 @@ void gprsInit()
   sendATcommand("AT+SAPBR=3,1,\"PWD\",\"\"", "OK", 2000);
   while (sendATcommand("AT+SAPBR=1,1", "OK", 20000) == 0)
   {
-    delay(5000);
+    delay(3000);
   }
   // starts GPS session in stand alone mode
   answer = sendATcommand("AT+CGNSPWR=1", "OK", 1000);
@@ -26,6 +25,7 @@ void gprsInit()
   }
 }
 void sendDataToCloud() {
+  Serial.println("Trying to Send Data to Cloud");
   answer = sendATcommand("AT+HTTPINIT", "OK", 20000);
   if (answer == 1)
   {

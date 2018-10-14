@@ -8,7 +8,7 @@ int runTime = 0;
 //const byte interruptPin = 2;
 volatile byte state = LOW;
 void setup()
-{
+{ Serial.begin(9600);
   pinMode(interruptPin, INPUT_PULLUP);
   attachInterrupt(digitalPinToInterrupt(interruptPin), powerLost, LOW);
   startSystem(); // this will make two pin HIGH to keep the device running.
@@ -36,13 +36,14 @@ void resetSystem()
 }
 void startSystem()
 {
+  Serial.println("Starting up device . . .");
   digitalWrite(gsmResetPin, 1);
   digitalWrite(mcuResetPin, 1);
 }
 
 void powerLost()
 {
-  powerStatus = 0;
+  sendDataToCloud();
 }
 
 
