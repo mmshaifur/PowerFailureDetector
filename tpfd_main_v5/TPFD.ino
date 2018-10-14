@@ -22,6 +22,5 @@ void senseing()
   //Serial.print(sensorvalue0);
   Serial.println(" Percent");
   delay(500);
-
 }
 

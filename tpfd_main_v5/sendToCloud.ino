@@ -1,6 +1,7 @@
 int8_t answer;
 char aux_str[200];
-void gprsInit() {
+void gprsInit() 
+{
   Serial.begin(115200);
   Serial.println("Starting...");
   delay(3000);
