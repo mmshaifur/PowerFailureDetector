@@ -8,7 +8,8 @@ int runTime = 0;
 //const byte interruptPin = 2;
 volatile byte state = LOW;
 void setup()
-{ Serial.begin(9600);
+{ 
+  Serial.begin(115200);
   pinMode(interruptPin, INPUT_PULLUP);
   attachInterrupt(digitalPinToInterrupt(interruptPin), powerLost, LOW);
   startSystem(); // this will make two pin HIGH to keep the device running.
