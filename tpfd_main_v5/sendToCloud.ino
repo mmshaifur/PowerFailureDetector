@@ -13,6 +13,10 @@ void gprsInit() {
   while (sendATcommand("AT+SAPBR=1,1", "OK", 20000) == 0)
   {
     delay(3000);
+    if (runTime > 300000) // 5min
+  {
+    resetSystem(); //this will reset the gsm & arduino
+  }
   }
   // starts GPS session in stand alone mode
   answer = sendATcommand("AT+CGNSPWR=1", "OK", 1000);
@@ -31,7 +35,7 @@ void sendDataToCloud() {
     answer = sendATcommand("AT+HTTPPARA=\"CID\",1", "OK", 5000);
     if (answer == 1)
     {
-      sprintf(aux_str, "AT+HTTPPARA=\"URL\",\"http://shaifur.com/techcom/get.php?d=%s&v=%d&b=%d", dev, ac_voltage, batt);
+      sprintf(aux_str, "AT+HTTPPARA=\"URL\",\"http://shaifur.com/techcom/get.php?d=%d&v=%d&b=%d", dev, ac_voltage, batt);
       Serial.print(aux_str);
       answer = sendATcommand("\"", "OK", 6000);
       if (answer == 1)

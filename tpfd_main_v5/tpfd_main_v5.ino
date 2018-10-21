@@ -9,9 +9,11 @@ int runTime = 0;
 volatile byte state = LOW;
 void setup()
 { 
+  pinMode(gsmResetPin,OUTPUT);
+  pinMode(mcuResetPin, OUTPUT);
   Serial.begin(115200);
   pinMode(interruptPin, INPUT_PULLUP);
-  attachInterrupt(digitalPinToInterrupt(interruptPin), powerLost, LOW);
+  attachInterrupt(digitalPinToInterrupt(interruptPin), powerLost, FALLING);
   startSystem(); // this will make two pin HIGH to keep the device running.
   devInfo(); // get device name
   gprsInit(); // initialize sim808 module communication
@@ -24,10 +26,7 @@ void loop()
   senseing();
   sendDataToCloud();
 
-  if (runTime > 300000) // 5min
-  {
-    resetSystem(); //this will reset the gsm & arduino
-  }
+  
 }
 
 void resetSystem()
