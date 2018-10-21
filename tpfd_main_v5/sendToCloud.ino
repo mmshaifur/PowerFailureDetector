@@ -10,13 +10,7 @@ void gprsInit() {
   sendATcommand("AT+SAPBR=3,1,\"APN\",\"internet\"", "OK", 2000);
   sendATcommand("AT+SAPBR=3,1,\"USER\",\"\"", "OK", 2000);
   sendATcommand("AT+SAPBR=3,1,\"PWD\",\"\"", "OK", 2000);
-
-  while (sendATcommand("AT+SAPBR=1,1", "OK", 20000) == 0)
-  {
-    delay(3000);
-   
-  }
-
+  sendATcommand("AT+SAPBR=1,1", "OK", 20000);
 }
 void sendDataToCloud() {
   Serial.println("Trying to Send Data to Cloud");
