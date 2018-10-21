@@ -10,22 +10,13 @@ void gprsInit() {
   sendATcommand("AT+SAPBR=3,1,\"APN\",\"internet\"", "OK", 2000);
   sendATcommand("AT+SAPBR=3,1,\"USER\",\"\"", "OK", 2000);
   sendATcommand("AT+SAPBR=3,1,\"PWD\",\"\"", "OK", 2000);
+
   while (sendATcommand("AT+SAPBR=1,1", "OK", 20000) == 0)
   {
     delay(3000);
-    if (runTime > 300000) // 5min
-  {
-    resetSystem(); //this will reset the gsm & arduino
+   
   }
-  }
-  // starts GPS session in stand alone mode
-  answer = sendATcommand("AT+CGNSPWR=1", "OK", 1000);
-  if (answer == 0)
-  {
-    Serial.println("Error starting the GPS");
-    Serial.println("The code stucks here!!");
-    while (1);
-  }
+
 }
 void sendDataToCloud() {
   Serial.println("Trying to Send Data to Cloud");

@@ -8,13 +8,15 @@ int runTime = 0;
 //const byte interruptPin = 2;
 volatile byte state = LOW;
 void setup()
-{ 
-  pinMode(gsmResetPin,OUTPUT);
-  pinMode(mcuResetPin, OUTPUT);
+{
   Serial.begin(115200);
+  Serial.println("Starting up device . . .");
+  pinMode(gsmResetPin, OUTPUT);
+  pinMode(mcuResetPin, OUTPUT);
+  digitalWrite(gsmResetPin, 1);
+  digitalWrite(mcuResetPin, 1);
   pinMode(interruptPin, INPUT_PULLUP);
   attachInterrupt(digitalPinToInterrupt(interruptPin), powerLost, FALLING);
-  startSystem(); // this will make two pin HIGH to keep the device running.
   devInfo(); // get device name
   gprsInit(); // initialize sim808 module communication
   runTime = millis();
@@ -25,8 +27,12 @@ void loop()
 
   senseing();
   sendDataToCloud();
+  if (runTime > 120000)
+  {
+    resetSystem();
+  }
 
-  
+
 }
 
 void resetSystem()
@@ -34,12 +40,7 @@ void resetSystem()
   digitalWrite(gsmResetPin, 0);
   digitalWrite(mcuResetPin, 0);
 }
-void startSystem()
-{
-  Serial.println("Starting up device . . .");
-  digitalWrite(gsmResetPin, 1);
-  digitalWrite(mcuResetPin, 1);
-}
+
 
 void powerLost()
 {
