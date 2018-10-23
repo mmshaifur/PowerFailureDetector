@@ -12,18 +12,20 @@ void setup()
   pinMode(A3, OUTPUT); //gsm reset pin
   digitalWrite(A3, HIGH);
   pinMode(interruptPin, INPUT_PULLUP);
-//  attachInterrupt(digitalPinToInterrupt(interruptPin), powerLost, FALLING);
-  runTime=0;
+  //  attachInterrupt(digitalPinToInterrupt(interruptPin), powerLost, FALLING);
+  runTime = 0;
   devInfo(); // get device name
- // gprsInit(); // initialize sim808 module communication
+  delay(8000);
+  gprsInit(); // initialize sim808 module communication
 }
 
 void loop()
 {
   runTime = millis();
   senseing();
+  gprsInit();
   sendDataToCloud();
-  
+
 
   Serial.println(runTime);
   if (runTime > 60000)
@@ -31,14 +33,12 @@ void loop()
     Serial.println("Restarting up device . . .");
     resetSystem();
   }
-
-
 }
 
 void resetSystem()
 {
-  runTime=0;
-  
+  runTime = 0;
+
   digitalWrite(A3, LOW);
   delay(500);
   digitalWrite(A3, HIGH);
@@ -48,7 +48,7 @@ void resetSystem()
 
 void software_Reset() // Restarts program from beginning but does not reset the peripherals and registers
 {
-asm volatile ("  jmp 0");  
+  asm volatile ("  jmp 0");
 }
 
 

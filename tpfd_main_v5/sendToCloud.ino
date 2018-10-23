@@ -2,9 +2,7 @@ int8_t answer;
 char aux_str[200];
 void gprsInit() {
   Serial.println("Starting GSM...");
-  delay(3000);
-  delay(3000);
-  delay(5000);
+  delay(2000);
   while (sendATcommand("AT+CREG?", "+CREG: 0,1", 2000) == 0);
   sendATcommand("AT+SAPBR=3,1,\"Contype\",\"GPRS\"", "OK", 2000);
   sendATcommand("AT+SAPBR=3,1,\"APN\",\"internet\"", "OK", 2000);
