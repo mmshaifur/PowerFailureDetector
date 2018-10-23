@@ -14,13 +14,12 @@ void senseing()
    batt = Batt_Percent;
 //  volt = AC_Voltage;
 //  batt = Batt_Percent;
-  Serial.print("Line AC_Voltage= ");
-  Serial.print(AC_Voltage);
-  Serial.print(" Volt");
-  Serial.print("Batt_Percent= ");
-  Serial.print(Batt_Percent);
-  //Serial.print(sensorvalue0);
-  Serial.println(" Percent");
-  delay(500);
+//  Serial.print("Line AC_Voltage= ");
+//  Serial.print(AC_Voltage);
+//  Serial.print(" Volt");
+//  Serial.print("Batt_Percent= ");
+//  Serial.print(Batt_Percent);
+//  //Serial.print(sensorvalue0);
+//  Serial.println(" Percent");
+//  delay(500);
 }
-

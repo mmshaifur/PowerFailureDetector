@@ -1,9 +1,7 @@
 int dev = 1, ac_voltage = -100, batt = -100;
-byte gsmResetPin = A3;
-byte mcuResetPin = A2;
 byte interruptPin = 2;
 byte powerStatus = 1;
-int runTime = 0;
+long int runTime;
 // variables for using interrupt
 //const byte interruptPin = 2;
 volatile byte state = LOW;
@@ -11,24 +9,26 @@ void setup()
 {
   Serial.begin(115200);
   Serial.println("Starting up device . . .");
-  pinMode(gsmResetPin, OUTPUT);
-  pinMode(mcuResetPin, OUTPUT);
-  digitalWrite(gsmResetPin, 1);
-  digitalWrite(mcuResetPin, 1);
+  pinMode(A3, OUTPUT); //gsm reset pin
+  digitalWrite(A3, HIGH);
   pinMode(interruptPin, INPUT_PULLUP);
-  attachInterrupt(digitalPinToInterrupt(interruptPin), powerLost, FALLING);
+//  attachInterrupt(digitalPinToInterrupt(interruptPin), powerLost, FALLING);
+  runTime=0;
   devInfo(); // get device name
-  gprsInit(); // initialize sim808 module communication
-  runTime = millis();
+ // gprsInit(); // initialize sim808 module communication
 }
 
 void loop()
 {
-
+  runTime = millis();
   senseing();
   sendDataToCloud();
-  if (runTime > 120000)
+  
+
+  Serial.println(runTime);
+  if (runTime > 60000)
   {
+    Serial.println("Restarting up device . . .");
     resetSystem();
   }
 
@@ -37,8 +37,18 @@ void loop()
 
 void resetSystem()
 {
-  digitalWrite(gsmResetPin, 0);
-  digitalWrite(mcuResetPin, 0);
+  runTime=0;
+  
+  digitalWrite(A3, LOW);
+  delay(500);
+  digitalWrite(A3, HIGH);
+  software_Reset();
+}
+
+
+void software_Reset() // Restarts program from beginning but does not reset the peripherals and registers
+{
+asm volatile ("  jmp 0");  
 }
 
 
@@ -46,8 +56,3 @@ void powerLost()
 {
   sendDataToCloud();
 }
-
-
-
-
-
